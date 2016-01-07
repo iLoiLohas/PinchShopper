@@ -16,5 +16,16 @@ extends
 		$this->_log	= $log::getLogger($classname);
 		return	$this->_log;
 	}
-	
+	/**
+	 * POSTリクエストを取得．
+	 */
+	public function getPostList() {
+		$req	= $this->getRequest();
+		$list	= array();
+		if (!$req->isPost()) {
+			return $list;
+		}
+		$list	= $req->getParams();
+		return $list;
+	}
 }

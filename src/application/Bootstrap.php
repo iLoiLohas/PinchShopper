@@ -1,5 +1,5 @@
 <?php
-require_once APPLICATION_PATH . '/../library/log4j/Logger.php';
+require_once 'Logger.php';
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
@@ -19,19 +19,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	/**
 	 *
      * Bootstrap Logger
+     * @return Logger
      */
 	protected function _initLog() {
 		$options = $this->getOptions();
 		Logger::configure($options['log4php']['config']);
 		define('LOGGER', 'default');
 		$log	= Logger::getLogger('pinchshopper');
-// 		$remoteAddr = getenv( "REMOTE_ADDR" );
-// 		$remoteHost = getenv( "REMOTE_HOST" );
-// 		LoggerMDC::put( 'REMOTE_ADDR', $remoteAddr );
-// 		LoggerMDC::put( 'REMOTE_HOST', $remoteHost );
 		$log->debug("start");
 		Zend_Registry::set('logger', $log);
 		return $log;
 	}
 }
-
