@@ -30,4 +30,24 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Registry::set('logger', $log);
 		return $log;
 	}
+    /**
+     *
+     * Bootstrap db
+     */
+	protected function _initDb() {
+		try {
+			$options = new Zend_Config($this->getOptions('multidb'));
+			$dbConfig = $options->multidb->db1;
+			$dbConect = Zend_Db::factory($dbConfig->adapter, $dbConfig->params);
+			Zend_Registry::set('db1', $dbConect);
+
+			$dbConfig = $options->multidb->db2;
+			$dbConect = Zend_Db::factory($dbConfig->adapter, $dbConfig->params);
+			Zend_Registry::set('db2', $dbConect);
+		} catch(Exception $e) {
+			// データベース定義エラー
+			syslog(LOG_ERR, "database Error:".$e->getMessage());
+		}
+		return;
+	}
 }

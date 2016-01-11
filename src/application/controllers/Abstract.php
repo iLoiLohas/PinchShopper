@@ -18,6 +18,7 @@ extends
 	}
 	/**
 	 * POSTリクエストを取得．
+	 * @return array
 	 */
 	public function getPostList() {
 		$req	= $this->getRequest();
@@ -27,5 +28,11 @@ extends
 		}
 		$list	= $req->getParams();
 		return $list;
+	}
+	/**
+	 * viewの$indataへ書き込む．
+	 */
+	public function setIndata($var) {
+		$this->view->indata		= $var;
 	}
 }

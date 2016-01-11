@@ -302,7 +302,7 @@ class Logger {
 	/**
 	 * Check whether this Logger is enabled for a given Level passed as parameter.
 	 *
-	 * @param LoggerLevel level
+	 * @param LoggerLevel $level
 	 * @return boolean
 	 */
 	public function isEnabledFor($level) {
