@@ -1,4 +1,6 @@
 <?php
+require_once 'common/Auth.php';
+
 abstract class
 	ControllerAbstract
 extends
@@ -32,7 +34,13 @@ extends
 	/**
 	 * viewの$indataへ書き込む．
 	 */
-	public function setIndata($var) {
+	public function setViewIndata($var) {
 		$this->view->indata		= $var;
+	}
+	/**
+	 * viewの$serachlistへ書き込む．
+	 */
+	public function setViewSearchlist($var) {
+		$this->view->searchlist		= $var;
 	}
 }

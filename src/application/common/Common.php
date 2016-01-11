@@ -21,4 +21,11 @@ class Common
 		$db->setFetchMode(Zend_DB::FETCH_ASSOC);
 		return $db;
 	}
+	/**
+	 * ワークセッション名を取得する。
+	 */
+	public static function  getSessionName() {
+		$space	= "login_".@$_SERVER['HTTP_HOST'];
+		return $space;
+	}
 }

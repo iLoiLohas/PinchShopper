@@ -31,6 +31,9 @@ extends
 		if (count($customer) == 0) {
 			$this->_log->error('ログインユーザが存在しません．');
 			$errFlg = true;
+		} else {
+			$this->_log->debug('ログインユーザが存在しました．');
+			Auth::setAuth($customer);
 		}
 		return $errFlg;
 	}

@@ -1,5 +1,6 @@
 <?php
 require_once 'common/Common.php';
+require_once 'common/Auth.php';
 
 class ModelAbstract
 {

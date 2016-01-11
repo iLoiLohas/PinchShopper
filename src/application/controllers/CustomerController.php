@@ -17,10 +17,21 @@ extends
 	{
 		$this->_loginit(get_class($this));
 	}
-
-	public function loginAction()
-	{
+	public function preDispatch() {
+	}
+	/**
+	 * ログイン処理
+	 * route --> /customer
+	 */
+	public function loginAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		$chk	= Auth::loginCheck();
+		if ($chk != false) {
+			$this->_log->debug('ログインしています．');
+			$this->redirect('/item');
+		}
+		
+		/** セッション情報が無い場合 **/
 		$params		= $this->getPostList();
 		if (count($params) == 0) {
 			$this->_log->debug("パラメータがPOSTされていません．");
@@ -34,11 +45,11 @@ extends
 		
 		$mapper	= new Customer();
 		$result	= $mapper->login($params);
-		if ($result) {
+		if ($result === true) {
 			$this->_log->debug("ログイン失敗．");
 			return ;
 		}
 		
-		$this->_redirect('/item');
+		$this->redirect('/item');
 	}
 }
