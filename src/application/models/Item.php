@@ -36,12 +36,17 @@ extends
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 		$customerInfo	= array();
 		$db	= Common::getMaster();
-		
+
 		$mCustomer	= new TCustomer($db);
 		$select		= $mCustomer->select();
 		$select->where('customerID = ?',$id);
 		$customerInfo	= $mCustomer->fetchAll($select)->toArray();
-		
+
+		if (count($customerInfo) != 1) {
+			$this->_log->error('取得した顧客情報が1つではありませんでした．');
+			return ;
+		}
+
 		return $customerInfo;
 	}
 }
