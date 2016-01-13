@@ -16,4 +16,25 @@ class ModelAbstract
 		$this->_log	= $log::getLogger($classname);
 		return	$this->_log;
 	}
+	/**
+	 * データベーストランザクションを開始する．
+	 * @param Zend_Db $db
+	 */
+	protected function _begin($db) {
+		$db->beginTransaction();
+	}
+	/**
+	 * データベースコミット処理を行う．
+	 * @param Zend_Db $db
+	 */
+	protected function _commit($db) {
+		$db->commit();
+	}
+	/**
+	 * データベースロールバック処理を行う．
+	 * @param Zend_Db $db
+	 */
+	protected function _rollBack($db) {
+		$db->rollBack();
+	}
 }

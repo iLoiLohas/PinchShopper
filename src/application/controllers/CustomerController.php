@@ -5,7 +5,6 @@ require_once 'models/Customer.php';
 /**
  * CustomerController
  * @author iLoiLohas
- *
  */
 class
 	CustomerController
@@ -18,6 +17,7 @@ extends
 		$this->_loginit(get_class($this));
 	}
 	public function preDispatch() {
+		parent::_preDispatch();
 	}
 	/**
 	 * ログイン処理

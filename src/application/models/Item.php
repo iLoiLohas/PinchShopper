@@ -1,7 +1,6 @@
 <?php
 require_once 'models/Abstract.php';
-require_once 'common/db/TCustomer.php';
-require_once 'common/db/MItemStock.php';
+require_once 'common/db/db.php';
 
 class
 	Item
@@ -32,6 +31,32 @@ extends
 
 		return $items;
 	}
+	/**
+	 * 商品をカートに追加する．
+	 * カートのDBは顧客IDごとに用意してある．
+	 * @param $params
+	 */
+	public function addItemInCart($params) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$db		= Common::getMaster();
+		try {
+			$db->beginTransaction();
+
+			$mCart		= new TCart($db);
+			$result		= $mCart->insertRecord($params);
+			$
+			$this->_log->debug('DB上に登録した値：'.print_r($result));
+		} catch (Exception $e) {
+			$db->rollBack();
+		}
+		
+		return ;
+	}
+	/**
+	 * 顧客情報を取得．
+	 * @param int $id
+	 */
 	public function selectCustomerByCustomerID($id) {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 		$customerInfo	= array();
@@ -47,6 +72,6 @@ extends
 			return ;
 		}
 
-		return $customerInfo;
+		return $customerInfo[0];
 	}
 }

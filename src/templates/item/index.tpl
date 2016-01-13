@@ -27,7 +27,7 @@
 					{$record.name}
 				</td>
 				<td rowspan="2">
-					<input type="submit" name="{$record.itemID}" value="カートに追加"/>
+					<button type="button" onclick='location.href="/item/add?itemid={$record.itemID}"'>カートに追加</button>
 				</td>
 			</tr>
 			<tr>

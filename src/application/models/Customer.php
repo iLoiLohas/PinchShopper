@@ -1,6 +1,6 @@
 <?php
 require_once 'models/Abstract.php';
-require_once 'common/db/TCustomer.php';
+require_once 'common/db/db.php';
 
 class
 	Customer
@@ -28,12 +28,12 @@ extends
 		$select->where('email = ?',$params['email']);
 		$customer	= $mCustomer->fetchAll($select)->toArray();
 		
-		if (count($customer) == 0) {
-			$this->_log->error('ログインユーザが存在しません．');
+		if (count($customer) != 1) {
+			$this->_log->error('ログインユーザが存在しない or 複数人存在します．');
 			$errFlg = true;
 		} else {
 			$this->_log->debug('ログインユーザが存在しました．');
-			Auth::setAuth($customer);
+			Auth::setAuth($customer[0]);
 		}
 		return $errFlg;
 	}

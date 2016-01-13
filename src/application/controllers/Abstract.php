@@ -19,6 +19,13 @@ extends
 		return	$this->_log;
 	}
 	/**
+	 * 共通前処理
+	 */
+	protected function _preDispatch() {
+		$this->_log->debug("POSTデータ：".str_replace("¥n"," ",print_r($_POST,true)));
+		$this->_log->debug("GETデータ：".str_replace("¥n"," ",print_r($_GET,true)));
+	}
+	/**
 	 * POSTリクエストを取得．
 	 * @return array
 	 */
