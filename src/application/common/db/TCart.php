@@ -6,6 +6,7 @@ class
 extends
 	DbAbstract
 {
+	protected $_db	= null;
 	protected $_name	= 't_cart';
 	protected $_primary	= array('customerID','itemID');
 	protected $_referenceMap	= array(
@@ -22,14 +23,19 @@ extends
 	);
 	protected $_dependentTables	= array(
 	);
+
+	public function __construct($db){
+		$this->_loginit(get_class($this));
+		$this->_db	= $db;
+	}
 	
 	/**
 	 * DB上に登録
 	 */
 	public function insertRecord($items) {
-//		$record	= $this->setColumn($items);
-		$record	= $items;
-		$this->insert($record);
+		$record	= $this->setColumn($items);
+		$this->_log->debug("insertするデータ".print_r($record,true));
+		$this->_db->insert($this->_name,$record);
 		return $record;
 	}
 }

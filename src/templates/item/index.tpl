@@ -31,7 +31,7 @@
 					{$record.name}
 				</td>
 				<td rowspan="2">
-					<a href="/item/add/{$record.itemID}" class="btn btn-large btn-primary pl30 pr30 mt10" href="javascript:void(0);">カートに追加</a>
+					<a href="/item/add/{$record.itemID}" class="btn btn-large btn-primary" href="javascript:void(0);">カートに追加</a>
 				</td>
 			</tr>
 			<tr>

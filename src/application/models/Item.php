@@ -40,17 +40,18 @@ extends
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 		
 		$db		= Common::getMaster();
-		try {
-			$db->beginTransaction();
-
+		$this->_begin($db);
+		try {			
 			$mCart		= new TCart($db);
 			$result		= $mCart->insertRecord($params);
+			$this->_commit();
 
 			$this->_log->debug('DB上に登録した値：'.print_r($result));
 		} catch (Exception $e) {
-			$db->rollBack();
+			$this->_rollBack();
+			throw $e;
 		}
-		
+
 		return ;
 	}
 	/**

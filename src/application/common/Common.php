@@ -3,7 +3,7 @@ class Common
 {
 	/**
 	 * マスターDBを取得する．
-	 * @return Zend_Db
+	 * @return Zend_Db_Adapter_Mysqli
 	 */
 	static public function getMaster() {
 		$db	= Zend_Registry::get('db1');

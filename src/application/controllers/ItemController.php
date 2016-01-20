@@ -49,9 +49,11 @@ extends
 	public function addAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 
-		$params		= array();
-		$params['itemID']		= $_GET['itemid'];
-		array_merge($params, array('customerID' => Auth::getUserID()));
+		$params	= array();
+		$req	= $this->getRequest();
+		$this->_log->debug("itemID:".$req->getUserParam('itemid'));
+		$params['itemID']		= $req->getUserParam('itemid');
+		$params['customerID']	= Auth::getUserID();
 		$mapper		= new Item();
 		$mapper->addItemInCart($params);
 		

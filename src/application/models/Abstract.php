@@ -4,7 +4,8 @@ require_once 'common/Auth.php';
 
 class ModelAbstract
 {
-	protected $_log;
+	protected $_log	= NULL;
+	protected $_dbs	= array();
 	
 	/**
 	 *
@@ -18,23 +19,31 @@ class ModelAbstract
 	}
 	/**
 	 * データベーストランザクションを開始する．
-	 * @param Zend_Db $db
+	 * @param Zend_Db_Adapter_Mysqli $db
 	 */
 	protected function _begin($db) {
+		$this->_log->debug("_begin called(already):".count($this->_dbs));
 		$db->beginTransaction();
+		$this->_dbs[]	= $db;
 	}
 	/**
 	 * データベースコミット処理を行う．
-	 * @param Zend_Db $db
+	 * @param Zend_Db_Adapter_Mysqli $db
 	 */
-	protected function _commit($db) {
-		$db->commit();
+	protected function _commit() {
+		$this->_log->debug("_commit called:".count($this->_dbs));
+		foreach ($this->_dbs as $db){
+			$db->commit();
+		}
 	}
 	/**
 	 * データベースロールバック処理を行う．
-	 * @param Zend_Db $db
+	 * @param Zend_Db_Adapter_Mysqli $db
 	 */
-	protected function _rollBack($db) {
-		$db->rollBack();
+	protected function _rollBack() {
+		$this->_log->debug("_rollBack called:".count($this->_dbs));
+		foreach ($this->_dbs as $db){
+			$db->rollBack();
+		}
 	}
 }
