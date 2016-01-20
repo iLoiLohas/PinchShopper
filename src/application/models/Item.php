@@ -45,7 +45,7 @@ extends
 
 			$mCart		= new TCart($db);
 			$result		= $mCart->insertRecord($params);
-			$
+
 			$this->_log->debug('DB上に登録した値：'.print_r($result));
 		} catch (Exception $e) {
 			$db->rollBack();

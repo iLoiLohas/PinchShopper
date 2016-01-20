@@ -1,8 +1,12 @@
-﻿<!DOCTYPE HTML>
+﻿{include file='common/default_css.tpl' assign=default_css}
+{include file='common/default_js.tpl' assign=default_js}
+
+<!DOCTYPE HTML>
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
 	<title>商品選択</title>
+{$default_css}
 </head>
 <body>
 {if isset($indata.name1)}
@@ -13,7 +17,7 @@
 {/if}
 	商品一覧
 	<table border="1" width="400">
-		<form action="/item/add" method="post">
+		<form id="addItemForm" action="/item/add" method="post">
 {if $searchlist|@count == 0}
 			<tr>
 				<th>
@@ -27,7 +31,7 @@
 					{$record.name}
 				</td>
 				<td rowspan="2">
-					<button type="button" onclick='location.href="/item/add?itemid={$record.itemID}"'>カートに追加</button>
+					<a href="/item/add/{$record.itemID}" class="btn btn-large btn-primary pl30 pr30 mt10" href="javascript:void(0);">カートに追加</a>
 				</td>
 			</tr>
 			<tr>
@@ -44,5 +48,6 @@
 			</th>
 		</tr>
 	</table>
+{$default_js}
 </body>
 </html>

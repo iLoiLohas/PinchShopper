@@ -1,3 +1,5 @@
+{include file='common/default_css.tpl' assign=default_css}
+
 <!DOCTYPE HTML>
 <html lang="ja-JP">
 	<head>
