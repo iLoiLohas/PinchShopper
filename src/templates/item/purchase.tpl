@@ -9,7 +9,6 @@
 {$default_css}
 </head>
 <body>
-	<form action="./deliveryman" method="post">
 		<table border="1">
 			<tr>
 				<th>
@@ -38,17 +37,16 @@
 					{$record.price}
 				</th>
 				<th>
-					<input type="number" name="{$record.itemID}" value="">
+					{$record.numItem}
 				</th>
 			</tr>
 {/foreach}
 {/if}
 			<tr>
 				<th colspan="3" align="right">
-					<input type="submit" value="配達者を選ぶ">
+					<a hreh="/customer/deliveryman" class="btn">配達者を選択</a>
 			</tr>
 		</table>
-	</form>
 {$default_js}
 </body>
 </html>

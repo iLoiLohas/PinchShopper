@@ -25,12 +25,17 @@
 			</tr>
 {else}
 {foreach from=$searchlist item=record name=search_loop}
+		<form action="/item/add" method="post">
 			<tr>
 				<td width="80%">
 					{$record.name}
+					<input type="hidden" name="itemID" value="{$record.itemID}">
 				</td>
 				<td rowspan="2">
-					<a href="/item/add/{$record.itemID}" id="addItemBtn" class="btn btn-large btn-primary">カートに追加</a>
+					<input type="text" name="numItem" value="" placeholder="個数を入力">
+				</td>
+				<td rowspan="2">
+					<input type="submit" id="addItemBtn" class="btn btn-large btn-primary" value="カートに追加">
 				</td>
 			</tr>
 			<tr>
@@ -38,10 +43,11 @@
 					{$record.description}
 				</td>
 			</tr>
+		</form>
 {/foreach}
 {/if}
 		<tr>
-			<th colspan="2" align="right">
+			<th colspan="3" align="right">
 				<a href="/item/purchase">レジに進む</a>
 			</th>
 		</tr>

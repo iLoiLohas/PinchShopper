@@ -49,7 +49,39 @@ extends
 			$this->_log->debug("ログイン失敗．");
 			return ;
 		}
-		
+
 		$this->redirect('/item');
+	}
+	/**
+	 * 配達者を選択
+	 * route --> /customer/deliveryman
+	 */
+	public function deliverymanAction() {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$params		= $this->getPostList();
+		if (count($params) == 0) {
+			$this->_log->debug("パラメータがPOSTされていません．");
+			return ;
+		}
+		return ;
+	}
+	/**
+	 * 入店情報を更新
+	 * route --> /customer/status
+	 */
+	public function statusAction() {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+
+		$customerID	= Auth::getUserID();
+		$params		= $this->getPostList();
+		if (count($params) == 0) {
+			$this->_log->debug("パラメータがPOSTされていません．画面を表示します．");
+			return ;
+		}
+		$mapper	= new Customer();
+		$mapper->updateCustomerInfo($customerID, $params);
+		
+		return ;
 	}
 }

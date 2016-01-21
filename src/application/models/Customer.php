@@ -37,4 +37,25 @@ extends
 		}
 		return $errFlg;
 	}
+	/**
+	 * 顧客情報更新
+	 * @param $params
+	 */
+	public function updateCustomerInfo($id, $params) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$db	= Common::getMaster();
+		$this->_begin($db);
+		try {
+			$mCustomer	= new TCustomer($db);
+			$mCustomer->updateRecord($id, $params);
+			$this->_commit();
+			
+		} catch (Exception $e) {
+			$this->_rollBack();
+			throw $e;
+		}
+		
+		return ;
+	}
 }

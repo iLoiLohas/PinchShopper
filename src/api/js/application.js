@@ -11,11 +11,18 @@
 			$('#addItemForm').submit();
 		});
 		/***********************************************************************
-		 * index action
+		 * login action
 		 **********************************************************************/
 		/* login */
 		$(document).on('click', '#loginBtn', function() {
 			$('#loginForm').submit();
+		});
+		/***********************************************************************
+		 * status action
+		 **********************************************************************/
+		$(document).on('click', '#customerStatusBtn', function() {
+			console.log("入店情報を更新ボタン");
+			$('#customerStatusForm').submit();
 		});
 	});
 })(jQuery);

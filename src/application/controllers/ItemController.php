@@ -49,8 +49,12 @@ extends
 	public function addAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 
-		$req	= $this->getRequest();
-		$params['itemID']		= $req->getUserParam('itemid');
+		$params	= $this->getPostList();
+		if (count($params) == 0) {
+			$this->_log->debug("パラメータがPOSTされていません");
+			return ;
+		}
+		
 		$params['customerID']	= Auth::getUserID();
 		$mapper		= new Item();
 		$mapper->addItemInCart($params);
@@ -75,7 +79,6 @@ extends
 			$this->setViewSearchlist($cartContent);
 			return ;
 		}
-		// カートの中身を削除
 		return ;
 	}
 }

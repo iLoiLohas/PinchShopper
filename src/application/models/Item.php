@@ -46,7 +46,6 @@ extends
 			$result		= $mCart->insertRecord($params);
 			$this->_commit();
 
-			$this->_log->debug('DB上に登録した値：'.print_r($result));
 		} catch (Exception $e) {
 			$this->_rollBack();
 			throw $e;
@@ -78,6 +77,7 @@ extends
 		foreach ($items as $value) {
 			$mItem		= new MItemStock($db);
 			$itemInfo	= $mItem->itemInfo($value['itemID']);
+			$itemInfo['numItem']	= $value['numItem'];
 			$cartContent[]	= $itemInfo;
 		}
 		
