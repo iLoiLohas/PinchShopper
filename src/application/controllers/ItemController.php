@@ -17,8 +17,8 @@ extends
 		$this->_loginit(get_class($this));
 	}
 	public function preDispatch() {
-		parent::_preDispatch();
 		/** 各コントローラの共通前処理 **/
+		parent::_preDispatch();
 		$chk	= Auth::loginCheck();
 		if ($chk === false) {
 			$this->_log->debug('ログインしていません．リダイレクトします．');
@@ -49,15 +49,33 @@ extends
 	public function addAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 
-		$params	= array();
 		$req	= $this->getRequest();
-		$this->_log->debug("itemID:".$req->getUserParam('itemid'));
 		$params['itemID']		= $req->getUserParam('itemid');
 		$params['customerID']	= Auth::getUserID();
 		$mapper		= new Item();
 		$mapper->addItemInCart($params);
 		
 		$this->redirect('/item');
+		return ;
+	}
+	/**
+	 * カートの中を確認
+	 * route --> /item/purchase
+	 */
+	public function purchaseAction() {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+
+		$customerID	= Auth::getUserID();
+		$params	= $this->getPostList();
+		if (count($params) == 0) {
+			$this->_log->debug("パラメータがPOSTされていません．");
+			$mapper	= new Item();
+			$cartContent	= $mapper->showCartContent($customerID);
+			$this->_log->debug("カートの中身：".print_r($cartContent,true));
+			$this->setViewSearchlist($cartContent);
+			return ;
+		}
+		// カートの中身を削除
 		return ;
 	}
 }

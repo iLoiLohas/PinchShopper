@@ -6,10 +6,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>ログイン</title>
+{$default_css}
 </head>
 <body>
 	IDとパスワードを入力してください<br>
-	<form action="/customer/login" method="post">
+	<form id="loginForm" action="/customer/login" method="post">
 		<table>
 			<tr>
 				<th align='left'>
@@ -29,10 +30,11 @@
 			</tr>
 			<tr>
 				<th colspan="2" align="right">
-					<input type="submit" value="ログイン"/>
+					<a id="loginBtn" class="btn btn-large btn-primary" href="javascript:void(0);">ログイン</a>
 				</th>
 			</tr>
 		</table>
 	</form>
+{$default_js}
 </body>
 </html>

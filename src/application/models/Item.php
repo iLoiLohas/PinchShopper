@@ -55,6 +55,35 @@ extends
 		return ;
 	}
 	/**
+	 * カートの中身を選択する．
+	 * @param $params
+	 * @throws Exception
+	 */
+	public function showCartContent($id) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$cartContent	= array();
+		
+		$db		= Common::getMaster();
+		$mCart	= new TCart($db);
+		$select	= $mCart->select();
+		$select->where("customerID = ?",$id);
+		$items	= $mCart->fetchAll($select)->toArray();
+		
+		if (count($items) == 0) {
+			$this->_log->debug("カートの中身が存在しませんでした．");
+			return $cartContent;
+		}
+		
+		foreach ($items as $value) {
+			$mItem		= new MItemStock($db);
+			$itemInfo	= $mItem->itemInfo($value['itemID']);
+			$cartContent[]	= $itemInfo;
+		}
+		
+		return $cartContent;
+	}
+	/**
 	 * 顧客情報を取得．
 	 * @param int $id
 	 */

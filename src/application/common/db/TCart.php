@@ -34,7 +34,6 @@ extends
 	 */
 	public function insertRecord($items) {
 		$record	= $this->setColumn($items);
-		$this->_log->debug("insertするデータ".print_r($record,true));
 		$this->_db->insert($this->_name,$record);
 		return $record;
 	}

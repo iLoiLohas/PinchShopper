@@ -17,7 +17,6 @@
 {/if}
 	商品一覧
 	<table border="1" width="400">
-		<form id="addItemForm" action="/item/add" method="post">
 {if $searchlist|@count == 0}
 			<tr>
 				<th>
@@ -31,7 +30,7 @@
 					{$record.name}
 				</td>
 				<td rowspan="2">
-					<a href="/item/add/{$record.itemID}" class="btn btn-large btn-primary" href="javascript:void(0);">カートに追加</a>
+					<a href="/item/add/{$record.itemID}" id="addItemBtn" class="btn btn-large btn-primary">カートに追加</a>
 				</td>
 			</tr>
 			<tr>
@@ -41,7 +40,6 @@
 			</tr>
 {/foreach}
 {/if}
-		</form>
 		<tr>
 			<th colspan="2" align="right">
 				<a href="/item/purchase">レジに進む</a>
