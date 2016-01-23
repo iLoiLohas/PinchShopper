@@ -9,31 +9,24 @@
 {$default_css}
 </head>
 <body>
-	IDとパスワードを入力してください<br>
-	<form id="loginForm" action="/customer/login" method="post">
-		<table>
-			<tr>
-				<th align='left'>
-					Eメール
-				</th>
-				<th>
-					<input type="text" name="email" value="{$indata.email|escape}" placeholder="ID"/><br>
-				</th>
-			</tr>
-			<tr>
-				<th>
-					パスワード
-				</th>
-				<th>
-					<input type="password" name="password" value="{$indata.password|escape}" placeholder="パスワード"/><br>
-				</th>
-			</tr>
-			<tr>
-				<th colspan="2" align="right">
-					<a id="loginBtn" class="btn btn-large btn-primary" href="javascript:void(0);">ログイン</a>
-				</th>
-			</tr>
-		</table>
+	<form id="loginForm" action="/customer/login" class="form-horizontal" method="post">
+		<div class="form-group mt10">
+			<label for="inputEmail3" class="col-sm-1 control-label">Eメール</label>
+			<div class="col-sm-10">
+				<input type="text" name="email" value="{$indata.email|escape}" placeholder="ID"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputPassword3" class="col-sm-1 control-label">パスワード</label>
+			<div class="col-sm-10 mb10">
+				<input type="password" name="password" value="{$indata.password|escape}" placeholder="パスワード"/><br>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-md-10">
+				<a id="loginBtn" class="btn btn-default ml10" href="javascript:void(0);">ログイン</a>
+			</div>
+		</div>
 	</form>
 {$default_js}
 </body>

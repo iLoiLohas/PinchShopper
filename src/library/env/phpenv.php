@@ -9,6 +9,7 @@ set_include_path(
 			APPLICATION_PATH
 		,	APPLICATION_PATH . '/../library/log4php'
 		,	APPLICATION_PATH . '/../library/Smarty'
+		,	APPLICATION_PATH . '/../library/vendor'
 		,	get_include_path(),
 		)
 	)

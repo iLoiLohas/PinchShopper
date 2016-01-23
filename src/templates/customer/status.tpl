@@ -9,7 +9,8 @@
 {$default_css}
 </head>
 <body>
-	入店情報を更新してください．<br>
+	<center>
+		<h2>入店情報を更新してください．<br></h2>
     <form id="customerStatusForm" action="/customer/status" method="post">
 		<label>
 			<input type="radio" name="status" value="0"> 店舗にいる
@@ -21,9 +22,10 @@
 			<input type="radio" name="status" value="2"> 店舗に向かっている
 	    </label>
 		<div>
-		    <a href="javascript:void(0);" id="customerStatusBtn" class="btn btn-primary">送信</a>
+		    <a href="javascript:void(0);" id="customerStatusBtn" class="btn btn-default">送信</a>
 		</div>
     </form>
+	</center>
 {$default_js}
 </body>
 </html>

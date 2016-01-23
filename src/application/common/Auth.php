@@ -39,7 +39,7 @@ class
 	public static function setAuth($user) {
 		$sess	= new Zend_Session_Namespace(Common::getSessionName());
 		$sess->login	= $user;
-		$sess->setExpirationSeconds(60);
+		$sess->setExpirationSeconds(600);
 	}
 	/**
 	 * Auth情報をセッションから削除する．

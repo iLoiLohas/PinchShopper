@@ -9,7 +9,11 @@
 {$default_css}
 </head>
 <body>
-		<table border="1">
+	<center>
+		<h2>商品選択確認</h2>
+		<div class="container">
+			<div class="table-responsive">
+		<table class="table table-bordered">
 			<tr>
 				<th>
 					商品名
@@ -43,10 +47,14 @@
 {/foreach}
 {/if}
 			<tr>
-				<th colspan="3" align="right">
-					<a hreh="/customer/deliveryman" class="btn">配達者を選択</a>
-			</tr>
+				<th colspan="3" class="tar">
+					<a href="/customer/deliveryman" class="btn btn-default">配達者を選択</a>
+				</tr>
 		</table>
+
+			</div>
+		</div>
+	</center>
 {$default_js}
 </body>
 </html>

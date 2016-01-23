@@ -9,8 +9,12 @@
 {$default_css}
 </head>
 <body>
-	配達者を選択してください。
-	<table border="1">
+	<center>
+		<h2>配達者を選択してください。</h2>
+		<div class="container">
+			<div class="table-responsive">
+	<table class="table table-bordered">
+		<tbody>
 		<tr>
 			<td>
 				名前
@@ -28,6 +32,7 @@
 				配達者候補にする
 			</td>
 		</tr>
+		<form id="customerDeliverymanForm" action="/customer/deliveryman" method="post">
 {if $searchlist|@count == 0}
 		<tr>
 			<td colspan="5" align="middle">
@@ -36,34 +41,37 @@
 		</tr>
 {else}
 {foreach from=$searchlist item=record name=search_loop}
-		<form action="/customer/deliveryman" method="post">
 			<tr>
-				<td>
-					{$t_customer[deliverer].name1}
+				<td align="middle">
+					{$record.name1}
 				</td>
-				<td>
-					{$t_customer[deliverer].gender}
+				<td align="middle">
+					{if $record.gender == 0}男性{elseif $record.gender == 1}女性{/if}
 				</td>
-				<td>
-					{$t_customer[deliverer].status}
+				<td align="middle">
+					{if $record.status == 0}店舗にいる{elseif $record.status == 1}店舗にいない{elseif $record.status == 2}店舗に向かっている{/if}
 				</td>
-				<td>
-					{$t_customer[deliverer].rate}
-					/{$t_customer[deliverer].rateNum}回
+				<td align="middle">
+					{$record.rate}/{$record.rateNum}回
 				</td>
-				<td>
-					<input type="checkbox" name="{$t_customer[deliverer].name1}" value="1" checked/>
+				<td align="middle">
+					<input type="checkbox" name="customerID[]" value="{$record.customerID}" checked/>
 				</td>
 			</tr>
-		</form>
 {/foreach}
 {/if}
+		</form>
 		<tr>
 			<td colspan="5" align="right">
-				<input type="submit" value="依頼を送る">
+				<a href="javascript:void(0);" id="customerDeliverymanBtn" class="btn btn-primary">依頼を送る</a>
 			</td>
 		</tr>
+</tbody>
 	</table>
+
+			</div>
+		</div>
+</center>
 {$default_js}
 </body>
 </html>

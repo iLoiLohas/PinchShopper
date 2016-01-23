@@ -50,4 +50,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		}
 		return;
 	}
+	/**
+	 *
+     * Bootstrap vender
+     */
+	protected function _initVender() {
+		$conf	= array();
+		$options		= $this->getOptions();
+		foreach($options['vendor'] as $key => $data) {
+			$conf["$key"]	= $data;
+		}
+		Zend_Registry::set('vendor', $conf);
+		return ;
+	}
 }

@@ -21,8 +21,19 @@
 		 * status action
 		 **********************************************************************/
 		$(document).on('click', '#customerStatusBtn', function() {
-			console.log("入店情報を更新ボタン");
 			$('#customerStatusForm').submit();
+		});
+		/***********************************************************************
+		 * deliveryman action
+		 **********************************************************************/
+		$(document).on('click', '#customerDeliverymanBtn', function() {
+			$('#customerDeliverymanForm').submit();
+		});
+		/***********************************************************************
+		 * deliver action
+		 **********************************************************************/
+		$(document).on('click', '#customerDeliverBtn', function() {
+			$('#customerDeliverForm').submit();
 		});
 	});
 })(jQuery);
