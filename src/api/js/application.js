@@ -35,5 +35,11 @@
 		$(document).on('click', '#customerDeliverBtn', function() {
 			$('#customerDeliverForm').submit();
 		});
+		/***********************************************************************
+		 * evaluate action
+		 **********************************************************************/
+		$(document).on('click', '#customerEvaluateBtn', function() {
+			$('#customerEvaluateForm').submit();
+		});
 	});
 })(jQuery);

@@ -48,7 +48,8 @@ extends
 		$rows	= $this->find($id);
 		
 		if(count($rows) != 1) {
-			throw new Exception("顧客が１人ではありません．");
+			$this->_log->debug("顧客が１人ではありません！！");
+			return ;
 		}
 		$row		= $rows->current();
 		$itemInfo	= $row->toArray();

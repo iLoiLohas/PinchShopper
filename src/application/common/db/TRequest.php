@@ -34,7 +34,7 @@ extends
 	 */
 	public function insertRecord($items) {
 		$record	= $this->setColumn($items);
-		$record['passwaord']	= "password";	// パスワードを設定
+		$record['password']	= "password";	// パスワードを設定
 		$this->_db->insert($this->_name,$record);
 		$record['requestID']	= $this->getAdapter()->lastInsertId();
 		return $record;
@@ -46,7 +46,8 @@ extends
 		$record	= $this->setColumn($items);
 		$rows	= $this->find($id);
 		if (count($rows) != 1) {
-			throw new Exception("配達リクエストが１つではありません．");
+			$this->_log->error("配達リクエストが１つではありません．");
+			return ;
 		}
 		$row	= $rows->current();
 		foreach ($record as $key => $value) {
@@ -65,7 +66,8 @@ extends
 		$rows	= $this->find($id);
 		
 		if(count($rows) != 1) {
-			throw new Exception("配達リクエストが１つではありません．");
+			$this->_log->error("配達リクエストが１つではありません．");
+			return ;
 		}
 		$row		= $rows->current();
 		$itemInfo	= $row->toArray();

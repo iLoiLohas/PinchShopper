@@ -85,6 +85,7 @@ extends
 	 */
 	public function sendMailToDeliveryman($params) {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		$this->_log->debug("mapperに渡した引数：".print_r($params,true));
 		
 		$db	 = Common::getMaster();
 		$this->_begin($db);
@@ -201,6 +202,35 @@ extends
 		}
 		
 		return $requestInfo;
+	}
+	/**
+	 * 配達者or依頼者を評価する
+	 * @param $customerID
+	 * @param $params
+	 * @throws Exception
+	 */
+	public function evaluatePerson($customerID,$params) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$db	= Common::getMaster();
+		$this->_begin($db);
+		try {
+			$mRequest		= new TRequest($db);
+			$requestInfo	= $mRequest->findRecord($params['requestID']);
+			$mCustomer	= new TCustomer($db);
+			if ($customerID == $requestInfo['recipientID']) {
+				// 配達者を評価
+				$mCustomer->updateRecord($requestInfo['deliverymanID'], $params);
+			}elseif ($customerID == $requestInfo['deliverymanID']){
+				// 依頼者を評価
+				$mCustomer->updateRecord($requestInfo['recipientID'], $params);
+			}
+		} catch (Exception $e) {
+			$this->_rollBack();
+			throw $e;
+		}
+		
+		return ;
 	}
 	/**
 	 * SESからメールを送る

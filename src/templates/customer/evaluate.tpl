@@ -14,31 +14,34 @@
 {if $indata.customerID==$indata.recipientID}
 	<p><h2>お受け取り手続きが完了しました！ご利用ありがとうございます！</h2></p>
 	<p><h2>ご注文総額：{$indata.price}円</h2></p>
-	<form action="./evaluate" method="post">
 		<p><h2>よろしければ、配達者を5段階で評価してください</h2>
 <br>
 {elseif $indata.customerID==$indata.deliverymanID}
 		<p><h2>お引渡し手続きが完了しました！ご利用ありがとうございます！<h2></p>
 		<p><h2>獲得ポイント：300ポイント</h2></p>
-		<form action="./evaluate" method="post">
-			<p><h2>よろしければ、注文者を5段階で評価してください<h2><br>
+			<p>
+				<h2>よろしければ、注文者を5段階で評価してください<h2><br>
 {/if}
-	<h2>評価</h2>
-	<h3>
-		<label class="radio-inline"><input type="radio" name="rate" value="1">1</label>
-		<label class="radio-inline"><input type="radio" name="rate" value="2">2</label>
-		<label class="radio-inline"><input type="radio" name="rate" value="3">3</label>
-		<label class="radio-inline"><input type="radio" name="rate" value="4">4</label>
-		<label class="radio-inline"><input type="radio" name="rate" value="5">5</label>
+	<form id="customerEvaluateForm" action="/customer/evaluate" method="post">
+				<h2>評価</h2>
+				<h3>
+					<label class="radio-inline"><input type="radio" name="rate" value="1">1</label>
+					<label class="radio-inline"><input type="radio" name="rate" value="2">2</label>
+					<label class="radio-inline"><input type="radio" name="rate" value="3">3</label>
+					<label class="radio-inline"><input type="radio" name="rate" value="4">4</label>
+					<label class="radio-inline"><input type="radio" name="rate" value="5">5</label>
 <br>
-		悪い＜―――――＞良い
-	</h3>
-	</p>
-	<p><h2>備考欄</h2><br>
-	<input type="text" name="note">
-	</p>
-	<input type="submit" value="送信">
-	</form>
+					悪い＜―――――＞良い
+				</h3>
+				<input type="hidden" name="requestID" value="{$indata.requestID}">
+			</p>
+			<p>
+				<h2>備考欄</h2>
+<br>
+				<input type="text" name="comment">
+			</p>
+			<a id="customerEvaluateBtn" href="javascript:void(0);" class="btn btn-primary">送信</a>
+		</form>
 </center>
 {$default_js}
 </body>

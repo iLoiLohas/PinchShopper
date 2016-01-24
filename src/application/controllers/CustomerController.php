@@ -173,15 +173,18 @@ extends
 
 		$customerID	= Auth::getUserID();	// 配達者or依頼者
 		$params		= $this->getPostList();
-		if (array_key_exists('requestID',$params)) {
-			$this->_log->debug("POSTにrequestIDが存在しました．");
-			$mapper		= new Customer();
+		$mapper		= new Customer();
+		/* 評価画面をセット */
+		if (!array_key_exists('rate',$params)) {
+			$this->_log->debug("評価画面をセット．");
 			$indata		= $mapper->selectRequestInfo($params['requestID']);
 			$indata['customerID']	= $customerID;
+			$indata['requestID']	= $params['requestID'];
 			$this->setViewIndata($indata);
 			return ;
 		}
-		
+		/* 相手を評価 */
+		$mapper->evaluatePerson($customerID, $params);
 		return ;
 	}
 }
