@@ -30,12 +30,45 @@ extends
 	}
 	
 	/**
-	 * DB上に登録
+	 * insert
 	 */
 	public function insertRecord($items) {
 		$record	= $this->setColumn($items);
 		$this->_db->insert($this->_name,$record);
 		$record['requestID']	= $this->getAdapter()->lastInsertId();
 		return $record;
+	}
+	/**
+	 * update
+	 */
+	public function updateRecord($id, $items) {
+		$record	= $this->setColumn($items);
+		$rows	= $this->find($id);
+		if (count($rows) != 1) {
+			throw new Exception("配達リクエストが１つではありません．");
+		}
+		$row	= $rows->current();
+		foreach ($record as $key => $value) {
+			$row->$key	= $value;
+		}
+		$row->save();
+		$ret	= $row->toArray();
+		return $ret;
+	}
+	/**
+	 * IDからDB情報を返す
+	 * @param $id
+	 * @throws Exception
+	 */
+	public function findRecord($id) {
+		$rows	= $this->find($id);
+		
+		if(count($rows) != 1) {
+			throw new Exception("配達リクエストが１つではありません．");
+		}
+		$row		= $rows->current();
+		$itemInfo	= $row->toArray();
+		
+		return $itemInfo;
 	}
 }

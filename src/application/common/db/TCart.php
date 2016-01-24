@@ -37,4 +37,20 @@ extends
 		$this->_db->insert($this->_name,$record);
 		return $record;
 	}
+	/**
+	 * IDからDB情報を返す
+	 * @param $id
+	 * @throws Exception
+	 */
+	public function findRecord($id) {
+		$rows	= $this->find($id);
+	
+		if(count($rows) != 1) {
+			throw new Exception("カート情報が１つではありません．");
+		}
+		$row		= $rows->current();
+		$itemInfo	= $row->toArray();
+	
+		return $itemInfo;
+	}
 }

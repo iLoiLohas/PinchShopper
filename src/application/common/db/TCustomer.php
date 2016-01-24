@@ -39,7 +39,20 @@ extends
 		$ret	= $row->toArray();
 		return $ret;
 	}
+	/**
+	 * IDからDB情報を返す
+	 * @param $id
+	 * @throws Exception
+	 */
 	public function findRecord($id) {
+		$rows	= $this->find($id);
 		
+		if(count($rows) != 1) {
+			throw new Exception("顧客が１人ではありません．");
+		}
+		$row		= $rows->current();
+		$itemInfo	= $row->toArray();
+		
+		return $itemInfo;
 	}
 }

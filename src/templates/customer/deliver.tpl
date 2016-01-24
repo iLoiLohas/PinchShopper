@@ -11,7 +11,8 @@
 <body>
 	<center>
 		<h2>配達を行いますか？<br></h2>
-		    <form id="customerDeliverForm" action="/customer/deliver" method="post">
+		    <form id="customerDeliverForm" action="/customer/accepted" method="post">
+			<input type="hidden" name="requestID" value="{$indata.requestID}">
 		<label>
 			<input type="radio" name="report" value="0"> 行う
 	    </label>

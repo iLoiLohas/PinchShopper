@@ -59,20 +59,20 @@ extends
 	public function deliverymanAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 		
-		$customerID	= Auth::getUserID();
+		$customerID	= Auth::getUserID();	// 依頼者
 		$params		= $this->getPostList();
 		if (count($params) == 0) {
 			$this->_log->debug("パラメータがPOSTされていません．画面を表示します．");
 			
 			$mapper	= new Customer();
 			$deliverCustomer	= $mapper->selectDeliveryman($customerID);
-			$this->_log->debug("配達者：".print_r($deliverCustomer,true));
 			$this->setViewSearchlist($deliverCustomer);
 			return ;
 		}
 		
+		$params['recipientID']	= $customerID;
 		$mapper = new Customer();
-		$mapper->sendMailToDeliveryman();
+		$mapper->sendMailToDeliveryman($params);
 		return ;
 	}
 	/**
@@ -82,7 +82,7 @@ extends
 	public function statusAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 
-		$customerID	= Auth::getUserID();
+		$customerID	= Auth::getUserID();	// 配達者
 		$params		= $this->getPostList();
 		if (count($params) == 0) {
 			$this->_log->debug("パラメータがPOSTされていません．画面を表示します．");
@@ -102,7 +102,23 @@ extends
 	public function deliverAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 
-		$customerID	= Auth::getUserID();
+		$customerID	= Auth::getUserID();	// 配達者
+		$req	= $this->getRequest();
+		$requestID	= $req->getUserParam('requestid');
+		$indata	= array(
+				'requestID'	=> $requestID
+		);
+		$this->setViewIndata($indata);
+		return ;
+	}
+	/**
+	 * 配達情報
+	 * route --> /customer/accepted
+	 */
+	public function acceptedAction() {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+
+		$customerID	= Auth::getUserID();	// 配達者
 		$params		= $this->getPostList();
 		if (count($params) == 0) {
 			$this->_log->debug("パラメータがPOSTされていません．画面を表示します．");
@@ -112,10 +128,13 @@ extends
 			$this->_log->debug("配達が不許可でした．");
 			return ;
 		}
+		/* 配達を許可した場合 */
 		unset($params['report']);
 		$params['deliverymanID']	= $customerID;
 		$mapper	= new Customer();
-		$mapper->receiveRequest($params);
+		$itemsInCart	= $mapper->receiveRequest($params);
+		
+		$this->setViewSearchlist($itemsInCart);
 		
 		return ;
 	}

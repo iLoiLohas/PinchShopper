@@ -1,4 +1,5 @@
 <?php
+use Aws\CloudFront\Exception\Exception;
 require_once 'models/Abstract.php';
 require_once 'common/db/db.php';
 require_once 'common/enum/Status.php';
@@ -67,7 +68,7 @@ extends
 	 */
 	public function selectDeliveryman($id) {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
-		
+
 		$db	= Common::getMaster();
 		$mCustomer	= new TCustomer($db);
 		$select	= $mCustomer->select();
@@ -79,19 +80,11 @@ extends
 		return $deliverCustomer;
 	}
 	/**
-	 * 配達者へ依頼のメールを送る
+	 * 配達情報を登録し，配達者へ依頼のメールを送る
+	 * @todo メールを送る際，DB上の顧客情報から送る．
+	 * @throws Exception
 	 */
-	public function sendMailToDeliveryman() {
-		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
-		
-		$config		= Zend_Registry::get('vendor');
-		$awsConfig	= $config['amazon'];
-		
-		$sendMail	= new SesSendEmail($awsConfig['key'], $awsConfig['secret']);
-		$result		= $sendMail->sendEmail('naoto_nishizaka@hotmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 'テストメールの内容');
-		$this->_log->debug("メール送信結果:".print_r($result,true));
-	}
-	public function receiveRequest($params) {
+	public function sendMailToDeliveryman($params) {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 		
 		$db	 = Common::getMaster();
@@ -101,9 +94,69 @@ extends
 			$insertResult	= $mRequest->insertRecord($params);
 			$this->_commit();
 			
+			$mCustomer	= new TCustomer($db);
+			foreach ($params['customerID'] as $customerID) {
+				$customerInfo	= $mCustomer->findRecord($customerID);
+				$this->_sendMail('naoto_nishizaka@hotmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);
+			}
+				
 		} catch (Exception $e) {
 			$this->_rollBack();
 			throw $e;
 		}
+		
+	}
+	/**
+	 * 配達者が依頼を許可する．依頼者の配達情報を返す．
+	 * @param $params
+	 * @throws Exception
+	 */
+	public function receiveRequest($params) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$itemInfo	= array();
+		$db	 = Common::getMaster();
+		$this->_begin($db);
+		try {
+			// 配達情報を記録
+			$mRequest		= new TRequest($db);
+			$insertResult	= $mRequest->updateRecord($params['requestID'],$params);
+			$this->_commit();
+			
+			$this->_log->debug("insert結果：".print_r($insertResult,true));
+			// 依頼者のカートの中身の商品情報を取得
+			$requestInfo	= $mRequest->findRecord($insertResult['requestID']);
+			$mCart			= new TCart($db);
+			$select	= $mCart->select();
+			$select->where('customerID = ?',$requestInfo['recipientID']);
+			$itemInCart		= $mCart->fetchAll($select)->toArray();
+			$mItem	= new MItemStock($db);
+			foreach ($itemInCart as $item) {
+				$itemInfo[]	= $mItem->itemInfo($item['itemID']);
+			}
+			
+		} catch (Exception $e) {
+			$this->_rollBack();
+			throw $e;
+		}
+		
+		return $itemInfo;
+	}
+	/**
+	 * SESからメールを送る
+	 * @param $from 送信者
+	 * @param $to 受信者
+	 * @param $subject 題名
+	 * @param $content 内容
+	 */
+	protected function _sendMail($from, $to, $subject, $content) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$config		= Zend_Registry::get('vendor');
+		$awsConfig	= $config['amazon'];
+		
+		$sendMail	= new SesSendEmail($awsConfig['key'], $awsConfig['secret']);
+		$result		= $sendMail->sendEmail($from, $to, $subject, $content);
+		$this->_log->debug("メール送信結果:".print_r($result,true));
 	}
 }
