@@ -185,6 +185,7 @@ extends
 		}
 		/* 相手を評価 */
 		$mapper->evaluatePerson($customerID, $params);
+		$this->redirect('/item');
 		return ;
 	}
 }

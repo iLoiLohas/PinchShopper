@@ -97,7 +97,7 @@ extends
 			$mCustomer	= new TCustomer($db);
 			foreach ($params['customerID'] as $customerID) {
 				$customerInfo	= $mCustomer->findRecord($customerID);
-				$this->_sendMail('naoto_nishizaka@hotmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);		// テスト用
+				$this->_sendMail('naoto.nishizaka@gmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);		// テスト用
 			}
 				
 		} catch (Exception $e) {
@@ -135,7 +135,7 @@ extends
 			}
 			
 			// 配達が許可されたことを依頼者側にメール
-			$this->_sendMail('naoto_nishizaka@hotmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', '配達完了パスワード：'.$requestInfo['password']);		// テスト用
+			$this->_sendMail('naoto.nishizaka@gmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', '配達完了パスワード：'.$requestInfo['password']);		// テスト用
 			
 		} catch (Exception $e) {
 			$this->_rollBack();
@@ -220,11 +220,14 @@ extends
 			$mCustomer	= new TCustomer($db);
 			if ($customerID == $requestInfo['recipientID']) {
 				// 配達者を評価
+				$this->_log->debug("配達者を評価");
 				$mCustomer->updateRecord($requestInfo['deliverymanID'], $params);
 			}elseif ($customerID == $requestInfo['deliverymanID']){
 				// 依頼者を評価
+				$this->_log->debug("配達者を評価");
 				$mCustomer->updateRecord($requestInfo['recipientID'], $params);
 			}
+			$this->_commit();
 		} catch (Exception $e) {
 			$this->_rollBack();
 			throw $e;
