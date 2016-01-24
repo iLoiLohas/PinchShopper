@@ -39,10 +39,10 @@ extends
 	}
 	/**
 	 * IDからDB情報を返す
-	 * @param $id
+	 * @param array $id
 	 * @throws Exception
 	 */
-	public function findRecord($id) {
+	public function findRecord(array $id) {
 		$rows	= $this->find($id);
 	
 		if(count($rows) != 1) {

@@ -34,6 +34,7 @@ extends
 	 */
 	public function insertRecord($items) {
 		$record	= $this->setColumn($items);
+		$record['passwaord']	= "password";	// パスワードを設定
 		$this->_db->insert($this->_name,$record);
 		$record['requestID']	= $this->getAdapter()->lastInsertId();
 		return $record;

@@ -1,5 +1,4 @@
 <?php
-use Aws\CloudFront\Exception\Exception;
 require_once 'models/Abstract.php';
 require_once 'common/db/db.php';
 require_once 'common/enum/Status.php';
@@ -97,7 +96,7 @@ extends
 			$mCustomer	= new TCustomer($db);
 			foreach ($params['customerID'] as $customerID) {
 				$customerInfo	= $mCustomer->findRecord($customerID);
-				$this->_sendMail('naoto_nishizaka@hotmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);
+				$this->_sendMail('naoto_nishizaka@hotmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);		// テスト用
 			}
 				
 		} catch (Exception $e) {
@@ -123,7 +122,6 @@ extends
 			$insertResult	= $mRequest->updateRecord($params['requestID'],$params);
 			$this->_commit();
 			
-			$this->_log->debug("insert結果：".print_r($insertResult,true));
 			// 依頼者のカートの中身の商品情報を取得
 			$requestInfo	= $mRequest->findRecord($insertResult['requestID']);
 			$mCart			= new TCart($db);
@@ -135,12 +133,74 @@ extends
 				$itemInfo[]	= $mItem->itemInfo($item['itemID']);
 			}
 			
+			// 配達が許可されたことを依頼者側にメール
+			$this->_sendMail('naoto_nishizaka@hotmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', '配達完了パスワード：'.$requestInfo['password']);		// テスト用
+			
 		} catch (Exception $e) {
 			$this->_rollBack();
 			throw $e;
 		}
 		
 		return $itemInfo;
+	}
+	/**
+	 * 依頼者本人が受け取ったかどうかを確認する．
+	 */
+	public function confirmRequest($params) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$errFlg = false;
+		$db	= common::getMaster();
+		$this->_begin($db);
+		try {
+			$mRequest		= new TRequest($db);
+			$requestInfo 	= $mRequest->findRecord($params['requestID']);
+			
+			if ($requestInfo['password'] != $params['password']) {
+				$this->_log->debug("依頼人の入力したパスワードが異なります．");
+				$errFlg	= true;
+			}
+		} catch (Exception $e) {
+			$this->_rollBack();
+			throw $e;
+		}
+		
+		return $errFlg;
+	}
+	/**
+	 * 配達リクエスト情報を返す
+	 * @param $requestID
+	 * @throws Exception
+	 */
+	public function selectRequestInfo($requestID) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$db	= Common::getMaster();
+		$this->_begin($db);
+		try {
+			$mRequest		= new TRequest($db);
+			$requestInfo	= $mRequest->findRecord($requestID);
+			
+			$price	= 0;
+			$mCart		= new TCart($db);
+			$select		= $mCart->select();
+			$select->where('customerID = ?',$requestInfo['recipientID']);
+			$itemInCartInfo	= $mCart->fetchAll($select)->toArray();
+			foreach ($itemInCartInfo as $value) {
+				$mItem		= new MItemStock($db);
+				$itemInfo	= $mItem->itemInfo($value['itemID']);
+				$itemNum	= (int) $value['numItem'];
+				$itemPrice	= (int) $itemInfo['price'];
+				$price		+= $itemNum * $itemPrice;
+			}
+			$requestInfo['price']	= $price;
+			
+		} catch (Exception $e) {
+			$this->_rollBack();
+			throw $e;
+		}
+		
+		return $requestInfo;
 	}
 	/**
 	 * SESからメールを送る

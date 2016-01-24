@@ -58,7 +58,7 @@
 		</div>
 		<div>
 			QRコードをご利用いただけないときは、以下の注文番号をお伝えください<br>
-			注文番号：{$order_num}
+			注文番号：{$indata.requestID}
 		</div>
 	</p>
 </center>

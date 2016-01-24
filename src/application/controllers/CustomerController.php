@@ -128,14 +128,40 @@ extends
 			$this->_log->debug("配達が不許可でした．");
 			return ;
 		}
-		/* 配達を許可した場合 */
+		/* 配達を許可した場合（配達者に表示） */
 		unset($params['report']);
 		$params['deliverymanID']	= $customerID;
 		$mapper	= new Customer();
 		$itemsInCart	= $mapper->receiveRequest($params);
-		
 		$this->setViewSearchlist($itemsInCart);
+		$indata	= array(
+				'requestID'	=> $params['requestID']
+		);
+		$this->setViewIndata($indata);
 		
+		return ;
+	}
+	/**
+	 * 商品受け取り確認
+	 * 決済用バーコードから飛んでくる
+	 * route --> /customer/receipt
+	 */
+	public function receiptAction() {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+
+		$params		= $this->getPostList();
+		if (count($params) == 0) {
+			$this->_log->debug("パラメータがPOSTされていません．画面を表示します．");
+			return ;
+		}
+		$mapper	= new Customer();
+		$errFlg	= $mapper->confirmRequest($params);
+		if ($errFlg == true) {
+			$this->redirect("/customer/receipt");
+			return ;
+		}
+		$this->forward('evaluate','customer','default',array('requestID' => $params['requestID']));
+
 		return ;
 	}
 	/**
@@ -145,10 +171,14 @@ extends
 	public function evaluateAction() {
 		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
 
-		$customerID	= Auth::getUserID();
+		$customerID	= Auth::getUserID();	// 配達者or依頼者
 		$params		= $this->getPostList();
-		if (count($params) == 0) {
-			$this->_log->debug("パラメータがPOSTされていません．画面を表示します．");
+		if (array_key_exists('requestID',$params)) {
+			$this->_log->debug("POSTにrequestIDが存在しました．");
+			$mapper		= new Customer();
+			$indata		= $mapper->selectRequestInfo($params['requestID']);
+			$indata['customerID']	= $customerID;
+			$this->setViewIndata($indata);
 			return ;
 		}
 		
