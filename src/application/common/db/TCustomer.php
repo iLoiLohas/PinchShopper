@@ -35,6 +35,7 @@ extends
 		foreach ($record as $key => $value) {
 			$row->$key	= $value;
 		}
+		$row->rateNum	+= 1;
 		$row->save();
 		$ret	= $row->toArray();
 		return $ret;

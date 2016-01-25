@@ -13,7 +13,8 @@
 		<h2>商品選択確認</h2>
 		<div class="container">
 			<div class="table-responsive">
-		<table class="table table-bordered">
+		<table class="table">
+<thead>
 			<tr>
 				<th>
 					商品名
@@ -25,6 +26,7 @@
 					数量
 				</th>
 			</tr>
+</thead>
 {if $searchlist|@count == 0}
 			<tr>
 				<th colspan="3">
@@ -46,13 +48,9 @@
 			</tr>
 {/foreach}
 {/if}
-			<tr>
-				<th colspan="3" class="tar">
-					<a href="/customer/deliveryman" class="btn btn-default">配達者を選択</a>
-				</tr>
 		</table>
-
 			</div>
+					<a href="/customer/deliveryman" class="btn btn-primary">配達者を選択</a>
 		</div>
 	</center>
 {$default_js}

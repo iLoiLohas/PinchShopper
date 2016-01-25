@@ -13,8 +13,8 @@
 		<h2>配達者を選択してください。</h2>
 		<div class="container">
 			<div class="table-responsive">
-	<table class="table table-bordered">
-		<tbody>
+	<table class="table">
+<thead>
 		<tr>
 			<td>
 				名前
@@ -32,7 +32,7 @@
 				配達者候補にする
 			</td>
 		</tr>
-		<form id="customerDeliverymanForm" action="/customer/deliveryman" method="post">
+</thead>
 {if $searchlist|@count == 0}
 		<tr>
 			<td colspan="5" align="middle">
@@ -40,6 +40,7 @@
 			</td>
 		</tr>
 {else}
+		<form id="customerDeliverymanForm" action="/customer/deliveryman" method="post">
 {foreach from=$searchlist item=record name=search_loop}
 			<tr>
 				<td align="middle">
@@ -61,14 +62,9 @@
 {/foreach}
 {/if}
 		</form>
-		<tr>
-			<td colspan="5" align="right">
-				<a href="javascript:void(0);" id="customerDeliverymanBtn" class="btn btn-primary">依頼を送る</a>
-			</td>
-		</tr>
-</tbody>
 	</table>
 			</div>
+				<a href="javascript:void(0);" id="customerDeliverymanBtn" class="btn btn-primary">依頼を送る</a>
 		</div>
 </center>
 {$default_js}

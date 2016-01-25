@@ -18,8 +18,20 @@
 </h2>
 	<div class="container">
 	<div class="table-responsive">
-	<table class="table table-bordered">
-	<tbody>
+	<table class="table">
+<thead>
+			<tr>
+				<td>
+					商品名
+				</td>
+				<td>
+					価格
+				</td>
+				<td>
+					商品説明
+				</td>
+			</tr>
+</thead>
 {if $searchlist|@count == 0}
 			<tr>
 				<th colspan="2" align="middle">
@@ -27,23 +39,21 @@
 				</th>
 			</tr>
 {else}
+<tbody>
 {foreach from=$searchlist item=record name=search_loop}
 			<tr>
-				<td align="middle">
+				<td>
 					{$record.name}
 				</td>
-				<td rowspan="2" align="middle">
+				<td>
 					{$record.price}
 				</td>
-			</tr>
-			<tr>
-				<td align="middle">
+				<td>
 					{$record.description}
 				</td>
 			</tr>
 {/foreach}
-{/if}
-	
+{/if}	
 		</tbody>
 	</table>
 	</div>
@@ -54,7 +64,7 @@
 </h2>
 		<div>
 			レジでの決済の際と、商品のお引渡しの際に以下のQRコードをご提示ください。<br>
-			<img border="1" src=$qr width="210" height="210" alt="QRコード" title="このQRコードをご提示ください">
+			<img src="/img/qr.png" border="1" src=$qr width="210" height="210" alt="QRコード" title="このQRコードをご提示ください">
 		</div>
 		<div>
 			QRコードをご利用いただけないときは、以下の注文番号をお伝えください<br>

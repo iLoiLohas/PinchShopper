@@ -42,7 +42,7 @@ extends
 			$this->setViewSearchlist($deliverCustomer);
 			return ;
 		}
-		
+
 		$params['recipientID']	= $customerID;
 		$mapper = new Customer();
 		$mapper->sendMailToDeliveryman($params);

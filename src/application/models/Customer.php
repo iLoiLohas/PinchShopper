@@ -104,7 +104,6 @@ extends
 			$this->_rollBack();
 			throw $e;
 		}
-		
 	}
 	/**
 	 * 配達者が依頼を許可する．依頼者の配達情報を返す．
@@ -135,7 +134,8 @@ extends
 			}
 			
 			// 配達が許可されたことを依頼者側にメール
-			$this->_sendMail('naoto.nishizaka@gmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', '配達完了パスワード：'.$requestInfo['password']);		// テスト用
+			$this->_sendMail('naoto.nishizaka@gmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 
+					"配達が完了後は以下のURLから完了報告を行ってください．\n\nhttp://l.pinchshopper.jp/customer/receipt \n\n配達完了パスワード：".$requestInfo['password']);		// テスト用
 			
 		} catch (Exception $e) {
 			$this->_rollBack();
