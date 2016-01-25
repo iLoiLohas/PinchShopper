@@ -17,12 +17,12 @@ extends
 		$this->_loginit(get_class($this));
 	}
 	public function preDispatch() {
-		/** 各コントローラの共通前処理 **/
+		/* 各コントローラの共通前処理 */
 		parent::_preDispatch();
 		$chk	= Auth::loginCheck();
 		if ($chk === false) {
 			$this->_log->debug('ログインしていません．リダイレクトします．');
-			$this->redirect('/customer/login');
+			$this->redirect('/');
 		}
 	}
 	/**

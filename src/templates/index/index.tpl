@@ -9,7 +9,7 @@
 {$default_css}
 </head>
 <body>
-	<form id="loginForm" action="/customer/login" class="form-horizontal" method="post">
+	<form id="loginForm" action="/" class="form-horizontal" method="post">
 		<div class="form-group mt10">
 			<label for="inputEmail3" class="col-sm-1 control-label">Eメール</label>
 			<div class="col-sm-10">
