@@ -27,9 +27,6 @@
 				<td>
 					価格
 				</td>
-				<td>
-					商品説明
-				</td>
 			</tr>
 </thead>
 {if $searchlist|@count == 0}
@@ -47,9 +44,6 @@
 				</td>
 				<td>
 					{$record.price}
-				</td>
-				<td>
-					{$record.description}
 				</td>
 			</tr>
 {/foreach}

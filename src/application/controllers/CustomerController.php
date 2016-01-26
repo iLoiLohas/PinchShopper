@@ -154,6 +154,7 @@ extends
 			$indata['customerID']	= $customerID;
 			$indata['requestID']	= $params['requestID'];
 			$this->setViewIndata($indata);
+			$this->_log->debug("リクエスト情報".print_r($indata,true));
 			return ;
 		}
 		/* 相手を評価 */

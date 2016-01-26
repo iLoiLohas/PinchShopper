@@ -97,7 +97,7 @@ extends
 			$mCustomer	= new TCustomer($db);
 			foreach ($params['customerID'] as $customerID) {
 				$customerInfo	= $mCustomer->findRecord($customerID);
-				$this->_sendMail('naoto.nishizaka@gmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);		// テスト用
+				$this->_sendMail('naoto.nishizaka@gmail.com', $customerInfo['email'], 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);		// テスト用
 			}
 				
 		} catch (Exception $e) {
@@ -133,8 +133,12 @@ extends
 				$itemInfo[]	= $mItem->itemInfo($item['itemID']);
 			}
 			
+			// 依頼者情報
+			$mCustomer		= new TCustomer($db);
+			$customerInfo	= $mCustomer->findRecord($requestInfo['recipientID']);
+			
 			// 配達が許可されたことを依頼者側にメール
-			$this->_sendMail('naoto.nishizaka@gmail.com', 'naoto.nishizaka@gmail.com', 'テストメール', 
+			$this->_sendMail('naoto.nishizaka@gmail.com', $customerInfo['email'], 'テストメール', 
 					"配達が完了後は以下のURLから完了報告を行ってください．\n\nhttp://l.pinchshopper.jp/customer/receipt \n\n配達完了パスワード：".$requestInfo['password']);		// テスト用
 			
 		} catch (Exception $e) {
@@ -182,6 +186,7 @@ extends
 			$mRequest		= new TRequest($db);
 			$requestInfo	= $mRequest->findRecord($requestID);
 			
+			// 購入合計金額を計算
 			$price	= 0;
 			$mCart		= new TCart($db);
 			$select		= $mCart->select();
