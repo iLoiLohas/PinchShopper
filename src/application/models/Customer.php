@@ -71,9 +71,9 @@ extends
 		$db	= Common::getMaster();
 		$mCustomer	= new TCustomer($db);
 		$select	= $mCustomer->select();
-		$select->where('status = ?',customerStatus::In)
+		$select	->where('customerID != ?', $id)
+				->where('status = ?',customerStatus::In)
 				->orWhere('status = ?',customerStatus::Going);
-//				->orWhere('customerID != ?', $id);
 		$deliverCustomer	= $mCustomer->fetchAll($select)->toArray();
 		
 		return $deliverCustomer;
@@ -97,7 +97,8 @@ extends
 			$mCustomer	= new TCustomer($db);
 			foreach ($params['customerID'] as $customerID) {
 				$customerInfo	= $mCustomer->findRecord($customerID);
-				$this->_sendMail('naoto.nishizaka@gmail.com', $customerInfo['email'], 'テストメール', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);		// テスト用
+				$this->_log->debug("顧客情報".print_r($customerInfo,true));
+				$this->_sendMail('hogehoge@example.com', $customerInfo['email'], '商品配達依頼', 'http://l.pinchshopper.jp/customer/deliver/'.$insertResult['requestID']);
 			}
 				
 		} catch (Exception $e) {
@@ -136,9 +137,11 @@ extends
 			// 依頼者情報
 			$mCustomer		= new TCustomer($db);
 			$customerInfo	= $mCustomer->findRecord($requestInfo['recipientID']);
+			$address		= $customerInfo['address1'].$customerInfo['address2'].$customerInfo['address3'];
+			
 			
 			// 配達が許可されたことを依頼者側にメール
-			$this->_sendMail('naoto.nishizaka@gmail.com', $customerInfo['email'], 'テストメール', 
+			$this->_sendMail('hogehoge@example.com', $customerInfo['email'], '配達が許可されました．',
 					"配達が完了後は以下のURLから完了報告を行ってください．\n\nhttp://l.pinchshopper.jp/customer/receipt \n\n配達完了パスワード：".$requestInfo['password']);		// テスト用
 			
 		} catch (Exception $e) {
@@ -147,6 +150,21 @@ extends
 		}
 		
 		return $itemInfo;
+	}
+	/**
+	 * 顧客の住所情報を取得する．
+	 * @return string
+	 */
+	public function setAddress($requestID) {
+		$this->_log->debug(__CLASS__ . ":" . __FUNCTION__ . " called:(" . __LINE__ . ")");
+		
+		$db	= Common::getMaster();
+		$mRequest		= new TRequest($db);
+		$requestInfo	= $mRequest->findRecord($requestID);
+		$mCustomer		= new TCustomer($db);
+		$customerInfo	= $mCustomer->findRecord($requestInfo['recipientID']);
+		$address		= $customerInfo['address1'].$customerInfo['address2'].$customerInfo['address3'];
+		return $address;
 	}
 	/**
 	 * 依頼者本人が受け取ったかどうかを確認する．

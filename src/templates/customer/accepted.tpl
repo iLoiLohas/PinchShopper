@@ -53,6 +53,16 @@
 	</div>
 	</div>
 	</p>
+    <p><h2>配達先情報</h2>
+        <dl>
+            <dt>配達先住所
+                <dd>{$indata.address}
+            <dt>配達先周辺地図
+                <dd>
+<iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyChpv33LAG3DrAb14xrxkK9NtfbKRskvpk&q={urlencode($indata.address)}">
+</iframe>                    </iframe>
+        </dl>
+    </p>
 <h2>
 	<p>決済用バーコード
 </h2>

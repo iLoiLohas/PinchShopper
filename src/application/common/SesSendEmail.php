@@ -38,7 +38,7 @@ class SesSendEmail {
 					'Source' => $source,
 					'Destination' => array(
 							'ToAddresses' => array(
-									$source
+									$dest
 							),
 							'CcAddresses' => array(),	// CC(あれば)
 							'BccAddresses' => array()	// BCC(あれば)

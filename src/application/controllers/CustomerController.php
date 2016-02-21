@@ -64,8 +64,7 @@ extends
 		$mapper	= new Customer();
 		$deliverCustomer	= $mapper->updateCustomerInfo($customerID, $params);
 		
-		$this->setViewSearchlist($deliverCustomer);
-		
+		$this->redirect('/item');
 		return ;
 	}
 	/**
@@ -94,7 +93,7 @@ extends
 		$customerID	= Auth::getUserID();	// 配達者
 		$params		= $this->getPostList();
 		if (count($params) == 0) {
-			$this->_log->debug("パラメータがPOSTされていません．画面を表示します．");
+			$this->_log->debug("パラメータがPOSTされていません．");
 			return ;
 		}
 		if ($params['report'] == 1) {
@@ -107,8 +106,10 @@ extends
 		$mapper	= new Customer();
 		$itemsInCart	= $mapper->receiveRequest($params);
 		$this->setViewSearchlist($itemsInCart);
+		
 		$indata	= array(
-				'requestID'	=> $params['requestID']
+				'requestID'	=> $params['requestID'],
+				'address'	=> $mapper->setAddress($params['requestID'])
 		);
 		$this->setViewIndata($indata);
 		

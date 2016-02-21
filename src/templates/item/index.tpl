@@ -12,6 +12,7 @@
 	<center>
 	{if isset($indata.name1)}
 		<h1>ようこそ、{$indata.name1}さん。<br></h1>
+		<a class="btn btn-default" href="/customer/status">来店情報を更新する</a>
 	{else}
 		<h1>ようこそ。<a href="/customer/login">ログイン</a><br></h1>
 	{/if}
